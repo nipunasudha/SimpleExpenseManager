@@ -39,15 +39,17 @@ public class PersistentTransactionDAO implements TransactionDAO {
     @Override
     public List<Transaction> getAllTransactionLogs() {
         Cursor resultSet = database.rawQuery("SELECT * FROM TransactionLog", null);
-        resultSet.moveToFirst();
+
         List<Transaction> transactions = new ArrayList<Transaction>();
 
-        while (resultSet.moveToNext()) {
-            Transaction t = new Transaction(new Date(resultSet.getLong(resultSet.getColumnIndex("Log_date"))),
-                    resultSet.getString(resultSet.getColumnIndex("Account_no")),
-                    (resultSet.getInt(resultSet.getColumnIndex("Type")) == 0) ? ExpenseType.EXPENSE : ExpenseType.INCOME,
-                    resultSet.getDouble(resultSet.getColumnIndex("Amt")));
-            transactions.add(t);
+        if (resultSet.moveToFirst()) {
+            do {
+                Transaction t = new Transaction(new Date(resultSet.getLong(resultSet.getColumnIndex("Log_date"))),
+                        resultSet.getString(resultSet.getColumnIndex("Account_no")),
+                        (resultSet.getInt(resultSet.getColumnIndex("Type")) == 0) ? ExpenseType.EXPENSE : ExpenseType.INCOME,
+                        resultSet.getDouble(resultSet.getColumnIndex("Amt")));
+                transactions.add(t);
+            } while (resultSet.moveToNext());
         }
         return transactions;
     }
@@ -55,15 +57,17 @@ public class PersistentTransactionDAO implements TransactionDAO {
     @Override
     public List<Transaction> getPaginatedTransactionLogs(int limit) {
         Cursor resultSet = database.rawQuery("SELECT * FROM TransactionLog LIMIT " + limit, null);
-        resultSet.moveToFirst();
+
         List<Transaction> transactions = new ArrayList<Transaction>();
 
-        while (resultSet.moveToNext()) {
-            Transaction t = new Transaction(new Date(resultSet.getLong(resultSet.getColumnIndex("Log_date"))),
-                    resultSet.getString(resultSet.getColumnIndex("Account_no")),
-                    (resultSet.getInt(resultSet.getColumnIndex("Type")) == 0) ? ExpenseType.EXPENSE : ExpenseType.INCOME,
-                    resultSet.getDouble(resultSet.getColumnIndex("Amt")));
-            transactions.add(t);
+        if (resultSet.moveToFirst()) {
+            do {
+                Transaction t = new Transaction(new Date(resultSet.getLong(resultSet.getColumnIndex("Log_date"))),
+                        resultSet.getString(resultSet.getColumnIndex("Account_no")),
+                        (resultSet.getInt(resultSet.getColumnIndex("Type")) == 0) ? ExpenseType.EXPENSE : ExpenseType.INCOME,
+                        resultSet.getDouble(resultSet.getColumnIndex("Amt")));
+                transactions.add(t);
+            } while (resultSet.moveToNext());
         }
         return transactions;
     }

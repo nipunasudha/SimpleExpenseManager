@@ -44,7 +44,8 @@ public class PersistentExpenseManager extends ExpenseManager {
 
 
         //in-memory functions
-        setAccountsDAO(new PersistentAccountDAO(mydatabase));
+        PersistentAccountDAO accountDAO = new PersistentAccountDAO(mydatabase);
+        setAccountsDAO(accountDAO);
         setTransactionsDAO(new PersistentTransactionDAO(mydatabase));
     }
 }
