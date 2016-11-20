@@ -16,14 +16,17 @@ public class PersistentExpenseManager extends ExpenseManager {
     private Context ctx;
 
     public PersistentExpenseManager(Context ctx) {
+        //Point the constructor to the setup function
         this.ctx = ctx;
         setup();
     }
 
     @Override
     public void setup() {
+        //open existing database or create new db
         SQLiteDatabase mydatabase = ctx.openOrCreateDatabase("expenses5", ctx.MODE_PRIVATE, null);
 
+        //create databases.
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Account(" +
                 "Account_no VARCHAR PRIMARY KEY," +
                 "Bank VARCHAR," +
@@ -40,10 +43,9 @@ public class PersistentExpenseManager extends ExpenseManager {
                 "FOREIGN KEY (Account_no) REFERENCES Account(Account_no)" +
                 ");");
 
-        AccountDAO accountDAO = new PersistentAccountDAO(mydatabase);
 
-        setAccountsDAO(accountDAO);
-
+        //in-memory functions
+        setAccountsDAO(new PersistentAccountDAO(mydatabase));
         setTransactionsDAO(new PersistentTransactionDAO(mydatabase));
     }
 }
