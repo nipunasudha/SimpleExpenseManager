@@ -24,8 +24,7 @@ public class PersistentExpenseManager extends ExpenseManager {
     @Override
     public void setup() {
         //open existing database or create new db
-        SQLiteDatabase mydatabase = ctx.openOrCreateDatabase("expenses5", ctx.MODE_PRIVATE, null);
-
+        SQLiteDatabase mydatabase = ctx.openOrCreateDatabase("140605X", ctx.MODE_PRIVATE, null);
         //create databases.
         mydatabase.execSQL("CREATE TABLE IF NOT EXISTS Account(" +
                 "Account_no VARCHAR PRIMARY KEY," +
